@@ -9,6 +9,15 @@
     var WASTE = 0.10;
     var LUMBER_LENGTHS = [8, 10, 12, 14, 16, 20];
 
+    // Lethbridge, AB — NBC Climatic Data
+    var CITY = 'Lethbridge';
+    var SNOW_LOAD = 0.8;        // kPa ground snow (Ss)
+    var RAIN_LOAD = 0.1;        // kPa associated rain (Sr)
+    var FROST_DEPTH = 1.2;      // metres (~4 ft)
+    var FROST_DEPTH_FT = 4;
+    var WIND_PRESSURE = 0.45;   // kPa (1/50 hourly)
+    var DESIGN_TEMP = -33;      // °C January 2.5%
+
     function bestLength(ft) {
         for (var i = 0; i < LUMBER_LENGTHS.length; i++) {
             if (LUMBER_LENGTHS[i] >= ft) return LUMBER_LENGTHS[i];
@@ -295,7 +304,7 @@
         if (p.windows || p.doors) {
             title += ' (' + p.windows + 'W / ' + p.doors + 'D)';
         }
-        return { title: title, highlight: totalStuds + ' studs', lines: lines, note: 'Exterior walls require 2x6 min in Alberta for R-22+ insulation. 10% waste included.' };
+        return { title: title, highlight: totalStuds + ' studs', lines: lines, note: CITY + ': Exterior walls require 2x6 min for R-22+ insulation. Wind pressure ' + WIND_PRESSURE + ' kPa — verify sheathing nailing. 10% waste included.' };
     }
 
     function calcFloor(p) {
@@ -346,7 +355,9 @@
         lines.push(['Roof Area', roofArea.toFixed(0) + ' sq.ft']);
         lines.push(['Roof Angle', angle.toFixed(1) + ' degrees (' + p.pitch + '/12)']);
 
-        return { title: 'Roof Rafters: ' + p.width + '\' x ' + p.length + '\', ' + p.pitch + '/12 pitch', highlight: totalRafters + ' rafters', lines: lines, note: 'Alberta snow loads vary by region. Verify rafter spans per NBC 9.23 for your area.' };
+        lines.push(['Snow Load', SNOW_LOAD + ' kPa (Ss) + ' + RAIN_LOAD + ' kPa (Sr) — ' + CITY]);
+
+        return { title: 'Roof Rafters: ' + p.width + '\' x ' + p.length + '\', ' + p.pitch + '/12 pitch', highlight: totalRafters + ' rafters', lines: lines, note: CITY + ' snow load: ' + SNOW_LOAD + ' kPa — lowest in Alberta (chinook belt). Verify rafter spans per NBC 9.23. High wind area — ensure sheathing nailing meets NBC Table 9.23.3.5.' };
     }
 
     function calcSheathing(p) {
@@ -398,7 +409,9 @@
             lines.push(['Rebar (#4 @ 16" OC)', rebarPcs + ' pcs (20\' lengths)']);
         }
 
-        return { title: (typeLabels[p.type] || 'Concrete') + ': ' + p.length + '\' x ' + p.width + '\' x ' + p.depth + '"', highlight: cuYdW.toFixed(1) + ' cu.yd (' + cuMW.toFixed(1) + ' m\u00B3)', lines: lines, note: 'Alberta: 32 MPa min with air entrainment for exterior. Frost depth 4-5 ft. Order 5% extra.' };
+        lines.push(['Frost Depth', FROST_DEPTH + 'm (' + FROST_DEPTH_FT + '\') — ' + CITY]);
+
+        return { title: (typeLabels[p.type] || 'Concrete') + ': ' + p.length + '\' x ' + p.width + '\' x ' + p.depth + '"', highlight: cuYdW.toFixed(1) + ' cu.yd (' + cuMW.toFixed(1) + ' m\u00B3)', lines: lines, note: CITY + ': 32 MPa min with air entrainment for exterior. Frost depth ' + FROST_DEPTH + 'm (' + FROST_DEPTH_FT + '\'). Design temp ' + DESIGN_TEMP + '\u00B0C. Order 5% extra.' };
     }
 
     // =========================================================================
