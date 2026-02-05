@@ -40,6 +40,44 @@ body {
     --safe-bottom: env(safe-area-inset-bottom, 0px);
 }
 
+/* --- JH Monogram --- */
+.fc-monogram {
+    width: 32px;
+    height: 32px;
+    border-radius: 6px;
+    background: linear-gradient(135deg, var(--fc-orange), var(--fc-orange-dark));
+    color: var(--fc-white);
+    font-weight: 900;
+    font-size: 0.7rem;
+    letter-spacing: 0.5px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+}
+
+.fc-topbar-inner {
+    display: flex;
+    align-items: center;
+    gap: 0.6rem;
+}
+
+.fc-welcome-monogram {
+    width: 56px;
+    height: 56px;
+    border-radius: 12px;
+    background: linear-gradient(135deg, var(--fc-orange), var(--fc-orange-dark));
+    color: var(--fc-white);
+    font-weight: 900;
+    font-size: 1.2rem;
+    letter-spacing: 1px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin: 0 auto 0.75rem;
+    box-shadow: 0 4px 16px rgba(249,115,22,0.3);
+}
+
 /* --- Top Bar --- */
 .fc-topbar {
     position: fixed;
